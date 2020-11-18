@@ -1,0 +1,46 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+$script = <<SCRIPT
+
+yum install -y java-1.8.0-openjdk.x86_64
+
+echo "PATH=$PATH:/vagrant" >> /home/vagrant/.bashrc
+
+# disable firewall on CENTOS
+sudo systemctl disable firewalld
+
+sh wiremock.sh
+sleep 10
+sh setBasicOfferResponse.sh
+SCRIPT
+
+VAGRANTFILE_API_VERSION = "2"
+
+Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
+
+  name = "wiremock"
+
+  config.vm.define name do |host|
+    host.vm.hostname = name
+
+    # config.vm.box = "centos/6"
+    config.vm.box = "generic/centos7"
+
+    config.vbguest.iso_path = "http://download.virtualbox.org/virtualbox/6.0.24/VBoxGuestAdditions_6.0.24.iso"
+    # config.vbguest.iso_path = "http://download.virtualbox.org/virtualbox/6.1.16/VBoxGuestAdditions_6.1.16.iso"
+
+    host.vm.network :private_network, ip: "192.168.2.2"
+    # port forwarding should not be required because we use a fixed IP adresss
+    # config.vm.network "forwarded_port", guest: 8082, host: 8082
+
+    host.vm.provider :virtualbox do |vb|
+      vb.customize ["modifyvm", :id, "--memory", "1024"]
+    end
+
+    config.vm.provision "file", source: "./json", destination: "$HOME"
+    config.vm.provision "file", source: "./scripts", destination: "$HOME"
+    config.vm.provision "file", source: "./jar", destination: "$HOME"
+
+    config.vm.provision "shell", inline: $script
+  end
+end
