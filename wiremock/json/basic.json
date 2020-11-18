@@ -1,0 +1,28 @@
+[	{
+		"id": "1",
+		"name":"Jack Daniels Old No. 7",
+		"brand":"Jack Daniels",
+		"description":"A soft dry body with caramel corn and white pepper notes and a sweet burning ember finish.",
+		"cost":19.95,
+		"available":40,
+		"category":"Tennessee Whisky"
+	},
+	{
+		"id": "2",
+		"name":"Macallan 21 Year Old Fine Oak Scotch Whisky",
+		"brand":"Macallan",
+		"description":"A fantastic single-malt aged in a combination of Spanish oak casks seasoned with bourbon with a soft, rich, and spicy palate and a hint of oranges and peat.",
+		"cost":200.00,
+		"available":23,
+		"category":"Speyside Single Malt"
+	},
+	{
+		"id": "3",
+		"name":"Laphroaig 10 Year Old \"Cask Strength\" Islay Single Malt Scotch Whisky",
+		"brand":"Laphroaig",
+		"description":"Awarded Best Single Malt in the World in 2005 by Whisky Magazine, Original Cask Strength Laphroaig is bottled at natural distillery strength with all the depth of genuine taste and texture normally associated with sampling whisky at source.In making Laphroaig, malted barley is dried over a peat fire. The smoke from this peat, found only on Islay, gives Laphroaig its particularly rich flavour.",
+		"cost":70,
+		"available":34,
+		"category":"Islay Single Malt"
+	}	
+]
