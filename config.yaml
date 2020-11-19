@@ -1,6 +1,8 @@
 logging:
   level: INFO
 server:
+  maxThreads: 1024
+  maxQueuedRequests: 1024
   requestLog:
     appenders: []
 special-offers:

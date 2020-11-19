@@ -1,10 +1,12 @@
 logging:
   level: INFO
 server:
+  maxThreads: 1024
+  maxQueuedRequests: 1024
   requestLog:
     appenders: []
 special-offers:
-  endpoint: "http://192.168.2.2:8080/special-offers"
+  endpoint: "http://192.168.2.2:8082/special-offers"
   connectTimeout: 0
   readTimeout: 0
 hystrix:

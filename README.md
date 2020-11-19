@@ -49,5 +49,76 @@ Restart the UI Service with the BreakerBox configuration:
 java -jar target/devcon-fallacies-1.0-SNAPSHOT.jar server breaker-box-config.yaml
 ```
 
+## Test Scenarios
 
+### Out of the box configuration
+- run offers.rest
+- run offers-performance.sh
+expected behavior: the higher the load... the slower it gets
+
+### Introduce network delay
+- trigger network delay on wiremock server (500)
+- run offers.rest
+- run offers-performance.sh
+expected behavior: 
+   response times increase some will be really slow
+         http://localhost:8081/metrics?pretty=true 
+
+### Configure connection/read-timeouts (too low)
+- update yaml file (set timeouts lower then delay)
+- restart application
+- run offers.rest
+expected behavior: each request times out
+
+### Configure connection/read-timeouts
+- update yaml file (set timeouts higher then delay - 750/750)
+- restart application
+- run offers.rest
+- run offers-performance.sh
+expected behavior: 
+    response times increase a bit, 500 is possible (time-out)
+          http://localhost:8080/offers
+    
+
+- run offers-circuitbreaker-performance.sh
+expected behavior: 
+    response times increase a bit, all delays within tolerance
+    some response return the fallback result
+    tracing : breakpoints in hystrix commmand -> fallback is being triggered
+    circuitbreaker is getting opened / closed : 
+           http://localhost:8081/healthcheck?pretty=true
+           http://localhost:8080/tenacity/circuitbreakers
+
+### Introduce service delay
+
+- remove network delay on wiremock server
+- trigger service delay on wiremock server (700)
+- run offers.rest
+- run offers-performance.sh
+expected behavior: 
+   response times increase some will be really slow
+         http://localhost:8081/metrics?pretty=true
+   500 response my occur (time out triggered)      
+         
+- run offers-circuitbreaker-performance.sh
+expected behavior: 
+    response times increase a bit, all delays within tolerance
+    some repsonse return the fallback result
+    tracing : breakpoints in hystrix commmand -> fallback is being triggered
+    circuitbreaker is getting opened / closed : 
+           http://localhost:8081/healthcheck?pretty=true
+           http://localhost:8080/tenacity/circuitbreakers         
+
+## Limit number of request threads
+
+- maxThreads: 50, maxQueuedRequests = 50 in yaml file
+- restart application
+- run offers-circuitbreaker-performance.sh
+expected behavior: 
+     some requests will be reject - monitor trace in debug mode
+
+
+## Links
+
+- https://github.com/Netflix/Hystrix/wiki/How-it-Works
 
