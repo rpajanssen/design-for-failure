@@ -1,7 +1,7 @@
 breakerbox:
-  urls: file:/vagrant/config.properties,http://localhost:8080/archaius/breakerbox
+  urls: file:/config.properties,http://localhost:8080/archaius/breakerbox
   initialDelay: 0s
-  delay: 60s
+  delay: 10s
 
 database:
   driverClass: org.h2.Driver

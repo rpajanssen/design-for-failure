@@ -118,7 +118,15 @@ expected behavior:
      some requests will be reject - monitor trace in debug mode
 
 
+
+
+breakerbox : http://192.168.2.3:8080/
+
 ## Links
 
 - https://github.com/Netflix/Hystrix/wiki/How-it-Works
+- https://bencane.com/2012/07/16/tc-adding-simulated-network-latency-to-your-linux-server/
+- https://quarkus.io/guides/microprofile-fault-tolerance
+- git clone https://github.com/quarkusio/quarkus-quickstarts.git
+- https://lordofthejars.github.io/quarkus-cheat-sheet/
 
