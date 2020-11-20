@@ -4,9 +4,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.math.BigDecimal;
 
-/**
- * DTO for holding the Offer Data.
- */
 public class Offer {
 
     private final String id;

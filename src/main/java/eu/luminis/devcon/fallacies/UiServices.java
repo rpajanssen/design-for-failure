@@ -13,7 +13,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 
 /**
- * Starting point for the Ui Services.
+ * Starting point for the UI Services.
  */
 public class UiServices extends Application<UiServicesConfiguration> {
 
@@ -23,12 +23,16 @@ public class UiServices extends Application<UiServicesConfiguration> {
 
     @Override
     public String getName() {
-        return "Ui Services";
+        return "UI Services";
     }
 
     @Override
     public void initialize(Bootstrap<UiServicesConfiguration> bootstrap) {
-        bootstrap.addBundle(TenacityBundleBuilder.<UiServicesConfiguration>newBuilder().configurationFactory(new UiServicesTenacityBundleConfigurationFactory()).withCircuitBreakerHealthCheck().build());
+        bootstrap.addBundle(
+                TenacityBundleBuilder.<UiServicesConfiguration>newBuilder().configurationFactory(
+                        new UiServicesTenacityBundleConfigurationFactory()
+                ).withCircuitBreakerHealthCheck().build()
+        );
     }
 
     @Override

@@ -8,9 +8,6 @@ import io.dropwizard.Configuration;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 
-/**
- * Custom configuration for the Recommendation Application
- */
 public class UiServicesConfiguration extends Configuration {
 
     @Valid

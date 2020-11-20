@@ -4,9 +4,6 @@ import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 
-/**
- * DTO for holding multiple offers.
- */
 public class Offers implements Iterable<Offer> {
 
     public static final Offers EMPTY = new Offers(new Offer[0]);

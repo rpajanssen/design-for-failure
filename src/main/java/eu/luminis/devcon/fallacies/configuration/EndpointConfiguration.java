@@ -4,9 +4,6 @@ import javax.annotation.Nonnull;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 
-/**
- * Created by willem on 05/04/16.
- */
 public class EndpointConfiguration {
 
     @Nonnull

@@ -10,23 +10,20 @@ import eu.luminis.devcon.fallacies.offers.GetSpecialOffersCommand;
 
 import java.util.Map;
 
-/**
- * Created by willem on 16/03/16.
- */
 public class UiServicesTenacityBundleConfigurationFactory extends BaseTenacityBundleConfigurationFactory<UiServicesConfiguration> {
 
     @Override
     public Map<TenacityPropertyKey, TenacityConfiguration> getTenacityConfigurations(UiServicesConfiguration configuration) {
         final ImmutableMap.Builder<TenacityPropertyKey, TenacityConfiguration> builder = ImmutableMap.builder();
 
-        builder.put(GetSpecialOffersCommand.GetSpecialOffersKeys.GET_SPECIAL_OFFERS_KEY, configuration.getTenacityConfiguration());
+        builder.put(GetSpecialOffersCommand.GetSpecialOffersKeys.GET_SPECIAL_OFFERS, configuration.getTenacityConfiguration());
 
         return builder.build();
     }
 
     @Override
     public TenacityPropertyKeyFactory getTenacityPropertyKeyFactory(UiServicesConfiguration applicationConfiguration) {
-        return value -> GetSpecialOffersCommand.GetSpecialOffersKeys.GET_SPECIAL_OFFERS_KEY;
+        return value -> GetSpecialOffersCommand.GetSpecialOffersKeys.GET_SPECIAL_OFFERS;
     }
 
     @Override

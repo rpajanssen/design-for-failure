@@ -78,7 +78,14 @@ expected behavior: each request times out
 expected behavior: 
     response times increase a bit, 500 is possible (time-out)
           http://localhost:8080/offers
-    
+   
+- maxThreads: 50, maxQueuedRequests = 50 in yaml file
+- restart application   
+- run offers-performance.sh
+expected behavior: 
+    response times increase a bit, 500 is possible (time-out)
+          http://localhost:8080/offers    
+    some requests will be reject - monitor trace in debug mode - as a result of request queue flooding
 
 - run offers-circuitbreaker-performance.sh
 expected behavior: 
@@ -88,6 +95,58 @@ expected behavior:
     circuitbreaker is getting opened / closed : 
            http://localhost:8081/healthcheck?pretty=true
            http://localhost:8080/tenacity/circuitbreakers
+
+- runnning -> execute plain /offers -> it mail very well hang
+
+
+
+-----
+
+{
+"threadpool": {
+"threadPoolCoreSize": 20,
+"keepAliveTimeMinutes": 1,
+"maxQueueSize": -1,
+"queueSizeRejectionThreshold": 5,
+"metricsRollingStatisticalWindowInMilliseconds": 10000,
+"metricsRollingStatisticalWindowBuckets": 10
+},
+"circuitBreaker": {
+"requestVolumeThreshold": 20,
+"sleepWindowInMillis": 5000,
+"errorThresholdPercentage": 50,
+"metricsRollingStatisticalWindowInMilliseconds": 10000,
+"metricsRollingStatisticalWindowBuckets": 10
+},
+"semaphore": {
+"maxConcurrentRequests": 10,
+"fallbackMaxConcurrentRequests": 10
+},
+"executionIsolationThreadTimeoutInMillis": 1000,
+"executionIsolationStrategy": "THREAD"
+}
+
+small responses, 20 req/s -> no problem
+small responses, 50 req/s -> rejections
+   -> threadpool maxed out 
+   -> increase to 50
+small responses, 50 req/s -> no problem
+
+large responses, service delay 500, 50 req/s -> no problem
+   -> threadpool often maxed out, on the limit 
+   
+large responses, service delay 900, 50 req/s -> 
+   -> threadpool often maxed out, on the limit, some rejected
+   -> timeouts but no short circuits, so number of timeouts below the threshold    
+
+large responses, service delay 900, exec.timout 1500ms, 50 req/s -> no problem
+   -> threadpool often maxed out, on the limit ()
+   
+request thread pool : 50, queue 25
+   -> no problems with calling the special offers... but offers service unreponsive
+      -> try in browser
+   -> even if service delay brought back to 500
+      -> slow to unresponsive in the browser      
 
 ### Introduce service delay
 
@@ -103,11 +162,9 @@ expected behavior:
 - run offers-circuitbreaker-performance.sh
 expected behavior: 
     response times increase a bit, all delays within tolerance
-    some repsonse return the fallback result
+    some response return the fallback result
     tracing : breakpoints in hystrix commmand -> fallback is being triggered
-    circuitbreaker is getting opened / closed : 
-           http://localhost:8081/healthcheck?pretty=true
-           http://localhost:8080/tenacity/circuitbreakers         
+    circuitbreaker is getting opened / closed         
 
 ### Limit number of request threads
 
@@ -115,8 +172,10 @@ expected behavior:
 - restart application
 - run offers-circuitbreaker-performance.sh
 expected behavior: 
-     some requests will be reject - monitor trace in debug mode
+     some requests will be reject - monitor trace in debug mode - as a result of request queue flooding
+     -> if cascading -> website will become non responsive
 
+- restore maxThreads: 1024, maxQueuedRequests = 1024 in yaml file
 
 ### semaphore / bulkhead
 
@@ -126,15 +185,55 @@ expected behavior:
 
 ### hystrix
 
+- in breakerbox
+  - timeout 1000
+  - thread, max threads 20
 
+- run offers-hystrix-performance.sh
+expected behavior: 
+     bulkhead rejections
+     circuit opening
+     some requests will be reject - monitor trace in debug mode
+
+- in breakerbox
+  - timeout 3000
+  - thread, max threads 40
+expected behavior: 
+     less/no rejections
+     circuit opening less
+     
+- maxThreads: 50, maxQueuedRequests = 50 in yaml file
+- restart application     
+
+
+
+
+     
+-> expect higher non blocking throughput, less rquests in request queue and fail fast
+   so website will seem more responsive      
+     
+     
 ### async
 
 
+## Call Rest Resources
 
+The tests folder has rest example calls. You can run them straight from Intellij (after you install an http client plugn).
 
+Each file with the extension _.rest_ will execute one rest call.
 
+All script files will execute a load test using curl on one of the resources. Start a load test and monitor what happens.
 
-breakerbox : http://192.168.2.3:8080/
+## Breakerbox
+
+On running demo app:
+- metrics                       : http://localhost:8081/
+- list circuit breaker state    : http://localhost:8080/tenacity/circuitbreakers
+- complete service config       : http://localhost:8080/tenacity/configuration/GET_SPECIAL_OFFERS
+
+On the breaker box
+- navigate to the dashboard     : http://192.168.2.3:8080
+- list current configuration    : http://192.168.2.3:8080/archaius/production
 
 ## Links
 

@@ -31,4 +31,4 @@ hystrix:
 breakerbox:
   urls: http://192.168.2.3:8080/archaius/production
   initialDelay: 10s
-  delay: 30s
+  delay: 15s

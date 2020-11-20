@@ -15,15 +15,17 @@ import java.util.concurrent.*;
 import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
 
 /**
- * A Restful Resource returning Special Offers in with different resilience styles.
+ * A rest-resource that will call the special-offers rest service to get the special offers. Different
+ * resilience strategies are demonstrated in each resource method.
  */
 @Path("/offers")
 public class OffersResource {
+    private static final Logger logger = LoggerFactory.getLogger(OffersResource.class);
 
     private static final Semaphore semaphore = new Semaphore(3);
-    private static final ExecutorService executor = new ThreadPoolExecutor(3, 3, 1, TimeUnit.MINUTES, new SynchronousQueue<>());
+    private static final ExecutorService executor =
+            new ThreadPoolExecutor(3, 3, 1, TimeUnit.MINUTES, new SynchronousQueue<>());
 
-    private static final Logger logger = LoggerFactory.getLogger(OffersResource.class);
     private final SpecialOffersClient specialOffersClient;
 
     public OffersResource(SpecialOffersClient specialOffersClient) {
@@ -36,6 +38,9 @@ public class OffersResource {
         return specialOffersClient.getOffers();
     }
 
+    /**
+     * Demonstrates the use of a build breaker with a fallback using Hystrix.
+     */
     @Path("/circuitbreaker")
     @GET
     @Produces(APPLICATION_JSON)
@@ -75,6 +80,9 @@ public class OffersResource {
         }
     }
 
+    /**
+     * Demonstrates the use of a build breaker with a fallback icw thread-handover using Hystrix.
+     */
     @Path("/hystrix")
     @GET
     @Produces(APPLICATION_JSON)
@@ -84,6 +92,10 @@ public class OffersResource {
         return future.get();
     }
 
+    /**
+     * Demonstrates the use of a build breaker with a fallback icw thread-handover using and
+     * async call using Hystrix.
+     */
     @Path("/async")
     @GET
     @Produces(APPLICATION_JSON)
