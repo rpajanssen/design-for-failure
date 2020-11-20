@@ -109,13 +109,27 @@ expected behavior:
            http://localhost:8081/healthcheck?pretty=true
            http://localhost:8080/tenacity/circuitbreakers         
 
-## Limit number of request threads
+### Limit number of request threads
 
 - maxThreads: 50, maxQueuedRequests = 50 in yaml file
 - restart application
 - run offers-circuitbreaker-performance.sh
 expected behavior: 
      some requests will be reject - monitor trace in debug mode
+
+
+### semaphore / bulkhead
+
+
+### threadhandover / bulkhead
+
+
+### hystrix
+
+
+### async
+
+
 
 
 
@@ -130,3 +144,8 @@ breakerbox : http://192.168.2.3:8080/
 - git clone https://github.com/quarkusio/quarkus-quickstarts.git
 - https://lordofthejars.github.io/quarkus-cheat-sheet/
 
+- https://github.com/yammer/breakerbox
+
+
+https://openliberty.io/blog/2019/01/24/async-rest-jaxrs-microprofile.html
+     https://github.com/OpenLiberty/sample-async-rest

@@ -1,12 +1,12 @@
 GET http://localhost:8080/offers
 %%%
 
-# Duration: 1100 ms
+# Duration: 21 ms
 # URL: http://localhost:8080/offers
 
 # HTTP/1.1 200 OK
 
-@Date: Thu, 19 Nov 2020 09:55:55 GMT
+@Date: Fri, 20 Nov 2020 14:12:48 GMT
 @Content-Type: application/json
 @Vary: Accept-Encoding
 
