@@ -1,0 +1,1 @@
+seq 1 100000 | xargs -n1 -P50 bash -c 'url="http://localhost:8080/offers"; curl -O -s $url'

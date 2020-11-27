@@ -1,42 +1,54 @@
 ## Test Scenarios
 
 ### Out of the box configuration
-- run offers.rest
-- run offers-performance.sh
-expected behavior: the higher the load... the slower it gets
+No timeouts. Fast responding service and network
 
-### Introduce network delay
-- trigger network delay on wiremock server (500)
 - run offers.rest
-- run offers-performance.sh
+- run offers-lowload-performance.sh
+
+- refresh : http://localhost:8080/offers
+
+expected behavior: no problem
+
+### Introduce network/service delay
+- trigger network and service delay on wiremock server (500 / 2000)
+
+- run offers.rest
+- run offers-lowload-performance.sh
+
+- refresh : http://localhost:8080/offers
+
 expected behavior: 
-   response times increase some will be really slow
+   response times increase some will be really slow / service unavailable
          http://localhost:8081/metrics?pretty=true 
 
 ### Configure connection/read-timeouts (too low)
-- update yaml file (set timeouts lower then delay)
+- update yaml file (set timeouts lower then delay : 25 / 75)
 - restart application
 - run offers.rest
 expected behavior: each request times out
 
 ### Configure connection/read-timeouts
-- update yaml file (set timeouts higher then delay - 750/750)
+- update yaml file (set timeouts higher then delay - 50/2503)
 - restart application
 - run offers.rest
-- run offers-performance.sh
-expected behavior: 
-    response times increase a bit, 500 is possible (time-out)
-          http://localhost:8080/offers
-   
-- maxThreads: 50, maxQueuedRequests = 50 in yaml file
-- restart application   
-- run offers-performance.sh
-expected behavior: 
-    response times increase a bit, 500 is possible (time-out)
-          http://localhost:8080/offers    
-    some requests will be reject - monitor trace in debug mode - as a result of request queue flooding
+- run offers-lowload-performance.sh
 
-- run offers-circuitbreaker-performance.sh
+expected behavior: 
+    response times increase a bit, 2500+ is possible 
+    some requests time out... some don't
+    website remains available
+          http://localhost:8080/offers
+ 
+    some requests will be reject - monitor trace in debug mode - as a result of request queue flooding
+ 
+
+
+
+### circuit breaker
+
+- run offers-circuitbreaker-loadload-performance.sh
+
 expected behavior: 
     response times increase a bit, all delays within tolerance
     some response return the fallback result

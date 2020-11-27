@@ -1,1 +1,0 @@
-seq 1 25000 | xargs -n1 -P50 bash -c 'url="http://localhost:8080/offers/hystrix"; curl -O -s $url'
