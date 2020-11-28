@@ -1,5 +1,8 @@
 
 
+large responses, thread handover -> how does that solve the problem
+
+
 Hoe simuleer/demo jij dat de request threadpool vol loopt zodat je kunt laten zien dat alleen timeouts en circuitbreaker
 niet voldoende zijn?
 
