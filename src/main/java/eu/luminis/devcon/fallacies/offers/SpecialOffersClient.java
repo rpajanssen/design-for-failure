@@ -37,7 +37,6 @@ public class SpecialOffersClient {
         then = System.currentTimeMillis();
         
         try {
-            
             InputStream inputStream = connection.getInputStream();
             logger.info("Obtaining input-stream took: {}", System.currentTimeMillis() - then);
 

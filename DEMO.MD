@@ -44,7 +44,11 @@ expected behavior: no problem
 ### Introduce network/service delay
 - trigger network and service delay on wiremock server (500 / 2000)
 
+- set break points in the SpecialOffersClient 
+- start in debug mode
 - run offers.rest
+- trace -> observe we keep on waiting (for fun set the delay temporarily really high)
+
 - run offers-lowload-performance.sh (50 rps)
 
 - refresh : http://localhost:8080/offers
@@ -57,6 +61,8 @@ expected behavior:
 - update yaml file (set timeouts lower then delay : 25 / 75)
 - restart application
 - run offers.rest
+
+- trace -> observe a timeout occurs (every time)
 
 expected behavior: each request times out
 
@@ -78,10 +84,15 @@ expected behavior:
 
 ### Increase load
 - trigger network and service delay on wiremock server (10 / 100)
+
+- update yaml file (set timeouts lower then delay to force timeout)
+- set break points in the SpecialOffersClient and GetSpecialOffersCommand
+- restart application
+- run offers.rest
+- trace -> observe calls to fallback, observe how circuit breaker is tripped (15 quick calls)
+
 - update yaml file (set timeouts higher then delay - 15/150)
 - restart application
-
-- run offers.rest
 - run offers-lowload-performance.sh
 
 expected behavior: 
@@ -135,10 +146,15 @@ expected behavior:
          http://localhost:8080/offers/circuitbreaker
              faster, mostly available
               
+## Bulkhead         
         
+- set break points in the resource and client
+- set long connection timeouts and increase delay for service
+- restart application
+- run offers-semaphore.rest
+- trace -> observe semaphore not being acquired
         
-## Bulkhead Breaker        
-        
+- restore wiremock delays (10/100) and application connection timeouts (15/150)        
 - run offers-semaphore-performance.sh       
  
 observe difference:
@@ -168,6 +184,13 @@ observe difference:
 
 ## Thread hangover
 
+- set break points in the resource and client
+- set long connection timeouts and increase delay for service
+- restart application
+- run offers-threadhandover.rest
+- trace -> timeout on thread inresource
+
+- restore wiremock delays (10/100) and application connection timeouts (15/150) 
 - run offers-threadhandover-performance.sh       
  
 observe difference:

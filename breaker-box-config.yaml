@@ -1,8 +1,8 @@
 logging:
   level: INFO
 server:
-  maxThreads: 1024
-  maxQueuedRequests: 1024
+  maxThreads: 50
+  maxQueuedRequests: 50
   requestLog:
     appenders: []
 special-offers:
@@ -11,7 +11,7 @@ special-offers:
   readTimeout: 0
 hystrix:
   executionIsolationThreadTimeoutInMillis: 3000
-  executionIsolationStrategy: THREAD
+  executionIsolationStrategy: SEMAPHORE
   threadpool:
       threadPoolCoreSize: 10
       keepAliveTimeMinutes: 1
@@ -19,15 +19,16 @@ hystrix:
       queueSizeRejectionThreshold: 5
       metricsRollingStatisticalWindowInMilliseconds: 10000
       metricsRollingStatisticalWindowBuckets: 10
+  semaphore:
+    maxConcurrentRequests: 10
+    fallbackMaxConcurrentRequests: 10
   circuitBreaker:
       requestVolumeThreshold: 20
       errorThresholdPercentage: 50
       sleepWindowInMillis: 5000
-      metricsRollingStatisticalWindowInMilliseconds: 10000
+      metricsRollingStatisticalWindowInMilliseconds: 60000
       metricsRollingStatisticalWindowBuckets: 10
-  semaphore:
-      maxConcurrentRequests: 10
-      fallbackMaxConcurrentRequests: 10
+
 breakerbox:
   urls: http://192.168.2.3:8080/archaius/production
   initialDelay: 10s
