@@ -2,9 +2,14 @@
 
 todo: Wat ik demo is de effecten van de verschillende problemen die kunnen optreden 
 bij een server. Wat gebeurd er als connectie traag is (setNetwerkDelay), wat gebeurd 
-er als de read timeout hoog is (setNetworkDelay)? En wat is het effect van een hoge 
-read timeout icm een grote payload (setLargeOfferResponse + setNetworkDelay). Of wat 
-is het verschil in een traag netwerk en een trage service (setServiceDelay).
+er als de read timeout hoog is (setNetworkDelay)? 
+
+En wat is het effect van een hoge read timeout icm een grote payload 
+(setLargeOfferResponse + setNetworkDelay). 
+
+Of wat is het verschil in een traag netwerk en een trage service (setServiceDelay).
+
+
 Vervolgens kan je dus met de geïmplementeerde resilience patterns in de service 
 laten zien hoe zij omgaan met de vertragingen. Voor elk pattern is een implementatie 
 en kan je even een moment pakken om die te laten zien.
@@ -30,7 +35,7 @@ Error            :
 No timeouts. Fast responding service and network
 
 - run offers.rest
-- run offers-lowload-performance.sh
+- run offers-lowload-performance.sh (50 rps)
 
 - refresh : http://localhost:8080/offers
 
@@ -40,35 +45,35 @@ expected behavior: no problem
 - trigger network and service delay on wiremock server (500 / 2000)
 
 - run offers.rest
-- run offers-lowload-performance.sh
+- run offers-lowload-performance.sh (50 rps)
 
 - refresh : http://localhost:8080/offers
 
 expected behavior: 
    response times increase some will be really slow / service unavailable
-         http://localhost:8081/metrics?pretty=true 
+         http://localhost:8081/metrics?pretty=true       
 
 ### Configure connection/read-timeouts (too low)
 - update yaml file (set timeouts lower then delay : 25 / 75)
 - restart application
 - run offers.rest
+
 expected behavior: each request times out
 
-### Configure connection/read-timeouts
-- update yaml file (set timeouts higher then delay - 50/2503)
+### Re-configure connection/read-timeouts
+- update yaml file (set timeouts higher then delay - 550/2550)
 - restart application
 - run offers.rest
-- run offers-lowload-performance.sh
+- run offers-lowload-performance.sh (50 rps)
 
 expected behavior: 
-    response times increase a bit, 2500+ is possible 
+    response times increase a bit
     some requests time out... some don't
-    website remains available
+    website remains available 
           http://localhost:8080/offers
  
-    some requests will be reject - monitor trace in debug mode - as a result of request queue flooding
+    monitor trace for rejections / timeouts
  
-
 ## Circuit Breaker
 
 ### Increase load
@@ -227,3 +232,47 @@ monitor breakerbox dashboard
               - some circuits
               - still timeouts.... heavier load on back-end service
               - 30% errors
+
+## With random delays
+
+- on wiremock server set random delay
+- set network delay to 50
+
+- in yml set con.timeout 50
+- in yml set read timeout 300
+
+- run offers-lowload-performance.sh (50 rps)
+  expected behavior: 
+     - service available in the beginning : http://localhost:8080/offers
+     - trace : many timeouts
+     - site sometimes not available (slows down because of load)
+
+- run offers-circuitbreaker-lowload-performance.sh (50 rps)
+  expected behavior: 
+     - a lot of client timeouts
+     - a lot of circuit breaker trips
+     - site remains fast, fallback results
+     - often circuit breakers are tripped -> high error percentage (dashboard)
+
+- run offers-threadhandover-lowload-performance.sh (200 rps)
+  expected behavior: 
+     - ondanks veel hogere load -> site blijft toch bereikbaar
+     
+- configure semaphore strategy for hystrix     
+- run offers-hystrix-lowload-performance.sh (50 rps)
+  expected behavior:      
+     - a lot of client timeouts
+     - a lot of circuit breaker trips
+     - site remains fast
+     - often circuit breakers are tripped -> high error percentage (dashboard)
+     
+ - increase read timeout to 900    
+ - run offers-hystrix-lowload-performance.sh (50 rps)
+   expected behavior: 
+     - less timeouts 
+     - almost no circuit breaker trips
+     - but... the longer timeout -> more threads busy -> service may not be available (http://localhost:8080/offers)
+     
+     
+     
+     

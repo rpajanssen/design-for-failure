@@ -92,6 +92,10 @@ On the breaker box
 - navigate to the dashboard     : http://192.168.2.3:8080
 - list current configuration    : http://192.168.2.3:8080/archaius/production
 
+## Tool for calculating wiremock random settings
+
+https://www.wolframalpha.com/input/?i=lognormaldistribution%28log%28220%29%2C+0.4%29
+
 ## Links
 
 Resilience libraries

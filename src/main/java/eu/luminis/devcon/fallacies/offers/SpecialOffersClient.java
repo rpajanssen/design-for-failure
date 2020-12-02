@@ -34,15 +34,16 @@ public class SpecialOffersClient {
         connection.connect();
         logger.info("Connecting took: {}", System.currentTimeMillis() - then);
 
+        then = System.currentTimeMillis();
+        
         try {
-            then = System.currentTimeMillis();
-
+            
             InputStream inputStream = connection.getInputStream();
             logger.info("Obtaining input-stream took: {}", System.currentTimeMillis() - then);
 
             return readToObject(inputStream);
         } catch (SocketTimeoutException exception) {
-            logger.info("Response timed out");
+            logger.info("Response timed out after: {}", System.currentTimeMillis() - then);
             throw exception;
         } finally {
             connection.disconnect();

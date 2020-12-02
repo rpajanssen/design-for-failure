@@ -1,3 +1,3 @@
 #!/usr/bin/env bash
-java -jar wiremock-1.57-standalone.jar --port 8082 --no-request-journal &
+java -jar wiremock-jre8-standalone-2.27.2.jar --port 8082 --no-request-journal &
 disown

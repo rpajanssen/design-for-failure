@@ -1,0 +1,7 @@
+{
+  "delayDistribution": {
+    "type": "lognormal",
+    "median": 200,
+    "sigma": 0.4
+  }
+}
