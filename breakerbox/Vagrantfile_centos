@@ -1,0 +1,28 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+$script = <<SCRIPT
+yum install -y java-1.8.0-openjdk.x86_64
+echo "PATH=$PATH:/vagrant" >> /home/vagrant/.bashrc
+sh /vagrant/breakerbox.sh
+SCRIPT
+
+VAGRANTFILE_API_VERSION = "2"
+
+Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
+
+  name = "breakerbox"
+
+  config.vm.define name do |host|
+    host.vm.hostname = name
+    host.vm.box = "centos64min"
+    host.vm.box_url = "https://github.com/2creatives/vagrant-centos/releases/download/v0.1.0/centos64-x86_64-20131030.box"
+
+    host.vm.network :private_network, ip: "192.168.2.3"
+
+    host.vm.provider :virtualbox do |vb|
+      vb.customize ["modifyvm", :id, "--memory", "1024"]
+    end
+
+    config.vm.provision "shell", inline: $script
+  end
+end
