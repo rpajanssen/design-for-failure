@@ -1,4 +1,4 @@
-# The Fallacies of Distributed Computing: What if the Network Fails?
+# Design for failure: What if the Network Fails?
 
 Demo code used to demonstrate the fallacies of distributing computing and resilience patterns how to fix them.
 
@@ -17,6 +17,18 @@ mvn clean install
 java -jar target/devcon-fallacies-1.0-SNAPSHOT.jar server config.yaml
 ```
 
+Start from Intellij
+
+Create a run configuration:
+- give it a proper name like ```demo```
+- add a run configuration
+- select ```eu.luminis.devcon.fallacies.UiServices``` as main class
+- add ```server config.yaml``` as program arguments
+- select project root folder as working directory
+- save the configuration
+
+Now you can run it from your IDE, and even debug it!
+
 ## HowTo Test
 
 The following URL's are exposed by the Ui Services demonstrating resilience patterns:
@@ -33,7 +45,7 @@ To change wiremock use the rest-interface or go to the shell as follows:
  cd wiremock
  vagrant ssh
  ```
- And play with the shell scripts in the ``/vagrant`` folder.
+ And play with the shell scripts in the root folder.
 
 ## With BreakerBox
 
@@ -49,9 +61,21 @@ Restart the UI Service with the BreakerBox configuration:
 java -jar target/devcon-fallacies-1.0-SNAPSHOT.jar server breaker-box-config.yaml
 ```
 
+Start from Intellij
+
+Create a run configuration:
+- give it a proper name like ```demo-breakerbox```
+- add a run configuration
+- select ```eu.luminis.devcon.fallacies.UiServices``` as main class
+- add ```server breaker-box-config.yaml``` as program arguments
+- select project root folder as working directory
+- save the configuration
+
+Now you can run it from your IDE, and even debug it!
+
 ## Call Rest Resources
 
-The tests folder has rest example calls. You can run them straight from Intellij (after you install an http client plugn).
+The tests folder has rest example calls. You can run them straight from Intellij (after you install an http client plugin).
 
 Each file with the extension _.rest_ will execute one rest call.
 
@@ -70,14 +94,36 @@ On the breaker box
 
 ## Links
 
-- https://github.com/Netflix/Hystrix/wiki/How-it-Works
-- https://bencane.com/2012/07/16/tc-adding-simulated-network-latency-to-your-linux-server/
-- https://quarkus.io/guides/microprofile-fault-tolerance
-- git clone https://github.com/quarkusio/quarkus-quickstarts.git
-- https://lordofthejars.github.io/quarkus-cheat-sheet/
+Resilience libraries
 
-- https://github.com/yammer/breakerbox
+https://resilience4j.readme.io/docs
+https://github.com/jhalterman/failsafe
+https://quarkus.io/guides/microprofile-fault-tolerance
+https://github.com/Netflix/Hystrix/wiki/How-it-Works
 
+Interesting reads
 
-https://openliberty.io/blog/2019/01/24/async-rest-jaxrs-microprofile.html
-     https://github.com/OpenLiberty/sample-async-rest
+https://12factor.net/
+https://martinfowler.com/articles/microservices.html
+
+https://dev.to/aws/why-are-services-slow-sometimes-mn3
+https://aws.amazon.com/builders-library/using-load-shedding-to-avoid-overload/
+
+https://docs.microsoft.com/en-us/azure/architecture/patterns/category/resiliency
+https://dzone.com/articles/design-patterns-for-microservices-1
+https://opensource.com/article/17/5/colorful-deployments
+https://blog.codecentric.de/en/2019/06/resilience-design-patterns-retry-fallback-timeout-circuit-breaker/
+https://dennis-xlc.gitbooks.io/restful-java-with-jax-rs-2-0-2rd-edition/content/en/part1/chapter13/server_asynchronous_response_processing.html
+https://dzone.com/articles/understanding-the-cap-theorem
+
+Example frameworks used
+
+https://github.com/dropwizard/dropwizard
+https://github.com/yammer/breakerbox
+https://github.com/yammer/tenacity
+http://www.batey.info/using-hystrix-with-dropwizard.html
+
+Other
+
+https://zipkin.io/
+https://github.com/tomakehurst/saboteur
