@@ -1,24 +1,5 @@
 # Test Scenarios
 
-todo: Wat ik demo is de effecten van de verschillende problemen die kunnen optreden 
-bij een server. Wat gebeurd er als connectie traag is (setNetwerkDelay), wat gebeurd 
-er als de read timeout hoog is (setNetworkDelay)? 
-
-En wat is het effect van een hoge read timeout icm een grote payload 
-(setLargeOfferResponse + setNetworkDelay). 
-
-Of wat is het verschil in een traag netwerk en een trage service (setServiceDelay).
-
-
-Vervolgens kan je dus met de geïmplementeerde resilience patterns in de service 
-laten zien hoe zij omgaan met de vertragingen. Voor elk pattern is een implementatie 
-en kan je even een moment pakken om die te laten zien.
-Je kan de code doorlopen / debuggen en ook de network inspector van chrome gebruiken 
-en de output logging om beter te laten zien wat er gebeurd.
-
-
-
-
 ## Breakerbox
 
 Success          : successful calls
