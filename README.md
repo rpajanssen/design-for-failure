@@ -92,42 +92,45 @@ On the breaker box
 - navigate to the dashboard     : http://192.168.2.3:8080
 - list current configuration    : http://192.168.2.3:8080/archaius/production
 
-## Tool for calculating wiremock random settings
+## Tool for calculating wiremock random failure settings
 
 https://www.wolframalpha.com/input/?i=lognormaldistribution%28log%28220%29%2C+0.4%29
 
 ## Links
 
-Resilience libraries
+### Resilience libraries
 
 https://resilience4j.readme.io/docs
 https://github.com/jhalterman/failsafe
 https://quarkus.io/guides/microprofile-fault-tolerance
 https://github.com/Netflix/Hystrix/wiki/How-it-Works
 
-Interesting reads
+### Interesting reads
 
 https://12factor.net/
 https://martinfowler.com/articles/microservices.html
 
 https://dev.to/aws/why-are-services-slow-sometimes-mn3
 https://aws.amazon.com/builders-library/using-load-shedding-to-avoid-overload/
-
 https://docs.microsoft.com/en-us/azure/architecture/patterns/category/resiliency
 https://dzone.com/articles/design-patterns-for-microservices-1
+https://itnext.io/5-patterns-to-make-your-microservice-fault-tolerant-f3a1c73547b3
 https://opensource.com/article/17/5/colorful-deployments
 https://blog.codecentric.de/en/2019/06/resilience-design-patterns-retry-fallback-timeout-circuit-breaker/
 https://dennis-xlc.gitbooks.io/restful-java-with-jax-rs-2-0-2rd-edition/content/en/part1/chapter13/server_asynchronous_response_processing.html
+https://medium.com/asos-techblog/improve-availability-and-resilience-of-your-micro-services-using-this-7-cloud-design-patterns-16006eaf32b1
+https://openliberty.io/blog/2019/01/24/async-rest-jaxrs-microprofile.html
+https://12factor.net/
 https://dzone.com/articles/understanding-the-cap-theorem
 
-Example frameworks used
+### Example frameworks used
 
 https://github.com/dropwizard/dropwizard
 https://github.com/yammer/breakerbox
 https://github.com/yammer/tenacity
 http://www.batey.info/using-hystrix-with-dropwizard.html
 
-Other
+### Other
 
 https://zipkin.io/
 https://github.com/tomakehurst/saboteur
